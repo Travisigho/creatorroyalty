@@ -180,6 +180,7 @@
 (define-public (withdraw (project-id uint))
   (let
     (
+      (recipient tx-sender)
       (pending (unwrap! (map-get? pending-withdrawals { project-id: project-id, recipient: tx-sender }) ERR-RECIPIENT-NOT-FOUND))
       (amount (get amount pending))
       (project (unwrap! (map-get? projects { project-id: project-id }) ERR-PROJECT-NOT-FOUND))
@@ -199,7 +200,7 @@
     )
 
     ;; Transfer STX to recipient
-    (as-contract (stx-transfer? amount tx-sender tx-sender))
+    (as-contract (stx-transfer? amount tx-sender recipient))
   )
 )
 
